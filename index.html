@@ -33,11 +33,23 @@
                 document.getElementById('verifying_success').innerText = 'Success: True';
                 showEditElement('verifying_raw_data', 'Raw data: ' + res.raw_data);
                 showEditElement('verifying_parity_bits', 'Parity bity: ' + res.parity_bits);
+                document.getElementById('verifying_error_position').style.visibility = 'hidden';
             } else {
                 document.getElementById('verifying_success').innerText = 'Success: False';
+                document.getElementById('verifying_raw_data').style.visibility = 'hidden';
+                document.getElementById('verifying_parity_bits').style.visibility = 'hidden';
                 showEditElement('verifying_error_position', 'Error position: ' + res.err_pos);
             }
             show_results('verifying_result');
+        }
+
+        function reset() {
+            document.getElementById('encoding_result').style.visibility = 'hidden';
+            document.getElementById('verifying_result').style.visibility = 'hidden';
+            document.getElementById('verifying_error_position').style.visibility = 'hidden';
+            document.getElementById('verifying_raw_data').style.visibility = 'hidden';
+            document.getElementById('verifying_parity_bits').style.visibility = 'hidden';
+            
         }
     </script>
 </head>
@@ -61,7 +73,7 @@
             </label><br>
 
             <input type="reset" value="Reset">
-            <input type="submit" value="Submit" onclick="encode();">
+            <input type="button" value="Validate" onclick="encode();">
         </form>
     </div>
 
@@ -83,7 +95,7 @@
             </label><br>
 
             <input type="reset" value="Reset">
-            <input type="submit" value="Submit" onclick="verify();">
+            <input type="button" value="Validate" onclick="verify();">
         </form>
     </div>
 
@@ -105,6 +117,8 @@
                 </ul>
             </li>
         </ul>
+
+        <input type="button" value="Reset" class="reset" onclick="reset();">
     </div>
 </body>
 
