@@ -1,3 +1,8 @@
+/*
+ *  Copyright (c) 2020 Hugo Haldi
+ *  Published under MIT license
+ */
+
 function generateHammingCode(raw_data, parity) {
     let parity_bits_n = 0;
     let parity_bits = new String();
