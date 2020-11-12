@@ -1,0 +1,111 @@
+<html>
+
+<head>
+    <title>Hamming code calculator</title>
+    <script src="hamming.js"></script>
+    <script>
+        const parity = (elementId) => { return document.getElementById(elementId).checked ? 1 : 0; };
+
+        function show_results(elementId) {
+            const show_element = (id) => {
+                document.getElementById(id).style.visibility = 'visible';
+            }
+            show_element('results');
+            show_element(elementId);
+        }
+
+        const showEditElement = (elementId, value) => {
+            let el = document.getElementById(elementId);
+            el.innerText = value;
+            el.style.visibility = 'visible';
+        };
+
+        function encode() {
+            const { encoded_data, parity_bits } = generateHammingCode(document.getElementById('raw_data').value, parity('query_odd'));
+            document.getElementById('encoding_data').innerText = 'Encoded data: ' + encoded_data;
+            document.getElementById('encoding_parity_bits').innerText = 'Parity bits: ' + parity_bits;
+            show_results('encoding_result');
+        }
+
+        function verify() {
+            const res = checkHammingCode(document.getElementById('verifying_encoded_data').value, parity('verify_odd'));
+            if (res.success) {
+                document.getElementById('verifying_success').innerText = 'Success: True';
+                showEditElement('verifying_raw_data', 'Raw data: ' + res.raw_data);
+                showEditElement('verifying_parity_bits', 'Parity bity: ' + res.parity_bits);
+            } else {
+                document.getElementById('verifying_success').innerText = 'Success: False';
+                showEditElement('verifying_error_position', 'Error position: ' + res.err_pos);
+            }
+            show_results('verifying_result');
+        }
+    </script>
+</head>
+
+<body>
+    <div id="query">
+        <form method="dialog">
+            <label>Raw data</label><br>
+            <input type="number" id="raw_data" required><br>
+
+            <label>Parity</label><br>
+
+            <label>
+                <input type="radio" id="query_odd" name="parity" checked>
+                Odd
+            </label>
+
+            <label>
+                <input type="radio" id="query_even" name="parity">
+                Even
+            </label><br>
+
+            <input type="reset" value="Reset">
+            <input type="submit" value="Submit" onclick="encode();">
+        </form>
+    </div>
+
+    <div id="verify">
+        <form method="dialog">
+            <label>Encoded data</label><br>
+            <input type="number" id="verifying_encoded_data" required><br>
+
+            <label>Parity</label><br>
+
+            <label>
+                <input type="radio" id="verify_odd" name="parity" checked>
+                Odd
+            </label>
+
+            <label>
+                <input type="radio" id="verify_even" name="parity">
+                Even
+            </label><br>
+
+            <input type="reset" value="Reset">
+            <input type="submit" value="Submit" onclick="verify();">
+        </form>
+    </div>
+
+    <div class="result" id="results" style="visibility: hidden;">
+        Results:<br>
+        <ul>
+            <li id="encoding_result" style="visibility: hidden;">Encoding data
+                <ul>
+                    <li id="encoding_data"></li>
+                    <li id="encoding_parity_bits"></li>
+                </ul>
+            </li>
+            <li id="verifying_result" style="visibility: hidden;">Verifying data
+                <ul>
+                    <li id="verifying_success"></li>
+                    <li id="verifying_error_position" style="visibility: hidden;"></li>
+                    <li id="verifying_raw_data" style="visibility: hidden;"></li>
+                    <li id="verifying_parity_bits" style="visibility: hidden;"></li>
+                </ul>
+            </li>
+        </ul>
+    </div>
+</body>
+
+</html>
